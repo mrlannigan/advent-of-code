@@ -8,15 +8,22 @@ function algo(report = []) {
     let duoResult;
     let triNumbers;
     let triResult;
+    let iterationCount = 0;
 
     for (const [topIndex, value1] of report.entries()) {
+        iterationCount += 1;
+
         for (const [midIndex, value2] of report.entries()) {
+            iterationCount += 1;
+
             if (duoResult === undefined && topIndex !== midIndex && value1 + value2 === 2020) {
                 duoNumbers = [value1, value2];
                 duoResult = value1 * value2;
             }
 
             for (const [botIndex, value3] of report.entries()) {
+                iterationCount += 1;
+
                 if (topIndex === midIndex && midIndex === botIndex) {
                     continue;
                 }
@@ -34,7 +41,8 @@ function algo(report = []) {
                     duoNumbers,
                     duoResult,
                     triNumbers,
-                    triResult
+                    triResult,
+                    iterationCount
                 };
             }
         }
@@ -49,7 +57,7 @@ function algo(report = []) {
         .split('\n')
         .map(Number);
         
-    const { duoNumbers, triNumbers, duoResult, triResult } = algo(reportNumbers);
+    const { duoNumbers, triNumbers, duoResult, triResult, iterationCount } = algo(reportNumbers);
     
     console.log('DUO Result:');
     console.log(`    Numbers that equal 2020: ${JSON.stringify(duoNumbers)}`);
@@ -58,4 +66,7 @@ function algo(report = []) {
     console.log('TRI Result:');
     console.log(`    Numbers that equal 2020: ${JSON.stringify(triNumbers)}`);
     console.log(`    Report answer: ${triResult}`);
+    console.log('');
+    console.log(`Report Size: ${reportNumbers.length}`);
+    console.log(`Iterations: ${iterationCount}`);
 })();
