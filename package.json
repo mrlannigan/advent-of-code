@@ -1,0 +1,6 @@
+{
+  "name": "advent-of-code",
+  "workspaces": [
+    "2021"
+  ]
+}
