@@ -1,9 +1,9 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
 enum Command {
-  forward = "forward",
-  up = "up",
-  down = "down",
+  forward = 'forward',
+  up = 'up',
+  down = 'down',
 }
 
 type CommandRow = {
@@ -18,8 +18,8 @@ type Submarine = {
 };
 
 const parseInput = (rawInput: string): CommandRow[] =>
-  rawInput.split("\n").map((row) => {
-    const rowSplit = row.split(" ");
+  rawInput.split('\n').map((row) => {
+    const rowSplit = row.split(' ');
 
     return {
       command: Command[rowSplit[0]],

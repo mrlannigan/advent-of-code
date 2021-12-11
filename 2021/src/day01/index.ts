@@ -1,7 +1,7 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
 const parseInput = (rawInput: string): number[] =>
-  rawInput.split("\n").map((item) => Number(item));
+  rawInput.split('\n').map((item) => Number(item));
 
 const calculateIncreases = (input: number[]) => {
   let last: number | undefined = undefined;
