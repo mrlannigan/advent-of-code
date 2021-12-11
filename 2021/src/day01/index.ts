@@ -1,6 +1,7 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string): number[] => rawInput.split('\n').map(item => Number(item));
+const parseInput = (rawInput: string): number[] =>
+  rawInput.split("\n").map((item) => Number(item));
 
 const calculateIncreases = (input: number[]) => {
   let last: number | undefined = undefined;
@@ -15,7 +16,7 @@ const calculateIncreases = (input: number[]) => {
   }
 
   return increases;
-}
+};
 
 const part1 = (rawInput: string): number => {
   const input = parseInput(rawInput);
@@ -30,7 +31,9 @@ const part2 = (rawInput: string) => {
   for (const index in input) {
     const numIndex = Number(index);
 
-    windows.push(input.slice(numIndex, numIndex + 3).reduce((prev, num) => prev + num));
+    windows.push(
+      input.slice(numIndex, numIndex + 3).reduce((prev, num) => prev + num),
+    );
   }
 
   return calculateIncreases(windows);
