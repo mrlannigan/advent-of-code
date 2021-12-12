@@ -3,21 +3,32 @@ import run from 'aocrunner';
 const parseInput = (rawInput: string) => rawInput.split('\n');
 
 type CountBitFrequencyResult = {
-  frequency: Map<number, number>,
-  filter: Map<number, string[]>
-}
+  frequency: Map<number, number>;
+  filter: Map<number, string[]>;
+};
 
-type CountBitOnlyFrequencyResult = Pick<CountBitFrequencyResult, 'frequency'>
+type CountBitOnlyFrequencyResult = Pick<CountBitFrequencyResult, 'frequency'>;
 
 enum RatingType {
   oxygen,
-  c02scrubber
+  c02scrubber,
 }
 
-
-export function countBitFreq(input: string[], bitPos: number, filter: true): CountBitFrequencyResult;
-export function countBitFreq(input: string[], bitPos: number, filter?: false): CountBitOnlyFrequencyResult;
-export function countBitFreq(input: string[], bitPos: number, filter = false): CountBitFrequencyResult | CountBitOnlyFrequencyResult {
+export function countBitFreq(
+  input: string[],
+  bitPos: number,
+  filter: true,
+): CountBitFrequencyResult;
+export function countBitFreq(
+  input: string[],
+  bitPos: number,
+  filter?: false,
+): CountBitOnlyFrequencyResult;
+export function countBitFreq(
+  input: string[],
+  bitPos: number,
+  filter = false,
+): CountBitFrequencyResult | CountBitOnlyFrequencyResult {
   const resultMap: Map<number, number> = new Map();
   const resultFilter: Map<number, string[]> = new Map();
 
@@ -35,7 +46,7 @@ export function countBitFreq(input: string[], bitPos: number, filter = false): C
 
   return {
     frequency: resultMap,
-    filter: resultFilter
+    filter: resultFilter,
   };
 }
 
@@ -68,7 +79,11 @@ const part1 = (rawInput: string) => {
   return gammaRate * epsilonRate;
 };
 
-const findRating = (input: string[], ratingType: RatingType, bitPos = 0): number => {
+const findRating = (
+  input: string[],
+  ratingType: RatingType,
+  bitPos = 0,
+): number => {
   const { frequency, filter } = countBitFreq(input, bitPos, true);
 
   const onBitCount = frequency.get(1) ?? 0;
@@ -79,7 +94,7 @@ const findRating = (input: string[], ratingType: RatingType, bitPos = 0): number
   if (onBitCount === offBitCount) {
     targetBit = 1;
   } else {
-    targetBit = (onBitCount > offBitCount ? 1 : 0);
+    targetBit = onBitCount > offBitCount ? 1 : 0;
   }
 
   if (ratingType === RatingType.c02scrubber) {
@@ -93,12 +108,15 @@ const findRating = (input: string[], ratingType: RatingType, bitPos = 0): number
   }
 
   return findRating(newInput, ratingType, bitPos + 1);
-}
+};
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return findRating(input, RatingType.oxygen) * findRating(input, RatingType.c02scrubber);
+  return (
+    findRating(input, RatingType.oxygen) *
+    findRating(input, RatingType.c02scrubber)
+  );
 };
 
 run({
