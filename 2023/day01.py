@@ -32,6 +32,6 @@ def main(data):
     lineTotal = int(onlyNumbers[0]) * 10 + int(onlyNumbers[-1])
     total += lineTotal
   
-  print(total)
+  return total
 
-main(get_day(2023, 1))
+print(f'Sum: {main(get_day(2023, 1))}')
