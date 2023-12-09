@@ -34,4 +34,5 @@ def main(data):
   
   return total
 
-print(f'Sum: {main(get_day(2023, 1))}')
+if __name__ == "__main__":
+  print(f'Sum: {main(get_day(2023, 1))}')
