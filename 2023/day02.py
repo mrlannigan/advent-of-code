@@ -8,11 +8,12 @@ MAX_CUBE_COLORS = {
 }
 
 class Pull:
-  colors = dict()
-  is_possible = True
-  failed_pull = None
 
   def __init__(self, input: str) -> None:
+    self.colors: dict[str, int] = dict()
+    self.is_possible = True
+    self.failed_pull = None
+
     for color_pulled in input.split(','):
       num_pulled_str, color = color_pulled.strip().split(' ')
       num_pulled = int(num_pulled_str)
@@ -22,27 +23,56 @@ class Pull:
         self.is_possible = False
         self.failed_pull = (color, num_pulled)
 
-def parse_game(game_line: str):
-  game_id = 0
-  pulls = list()
-  
-  if match := re.search("^Game ([0-9]+): (.+)", game_line, re.IGNORECASE):
-    game_id = int(match.group(1))
-    pulls = list(map(Pull, match.group(2).split(';')))
-    is_possible = len([pull for pull in pulls if pull.is_possible == False]) == 0
-    return (game_id, pulls, is_possible)
-  else:
-    return (0, list(), True)
+class Game:
 
-def compute_input(data: str):
+  def __init__(self, game_line: str):
+    self.id = 0
+    self.pulls: list[Pull] = list()
+    self.is_possible = True
+    self.max_colors: dict[str, int] = dict()
+
+    if match := re.search("^Game ([0-9]+): (.+)", game_line, re.IGNORECASE):
+      self.id = int(match.group(1))
+      for pull_line in match.group(2).split(';'):
+        pull = Pull(pull_line)
+        for color in pull.colors.keys():
+          if color not in self.max_colors or self.max_colors[color] < pull.colors[color]:
+            self.max_colors[color] = pull.colors[color]
+        self.pulls.append(pull)
+      
+    self.is_possible = self.determine_is_possible()
+    
+  
+  def determine_is_possible(self):
+    return len([pull for pull in self.pulls if pull.is_possible == False]) == 0
+
+  def get_max_cube_power(self):
+    total = 0
+    for color_value in self.max_colors.values():
+      if total == 0:
+        total = color_value
+      else:
+        total *= color_value
+    return total
+
+def compute_input_game_ids(data: str):
   game_id_total = 0
   for game_line in data.splitlines():
-    game_id, _, is_possible = parse_game(game_line)
-    if is_possible:
-      game_id_total += game_id
+    game = Game(game_line)
+    if game.is_possible:
+      game_id_total += game.id
 
   return game_id_total
 
+def compute_input_game_powers(data: str):
+  game_total = 0
+  for game_line in data.splitlines():
+    game = Game(game_line)
+    game_total += game.get_max_cube_power()
+
+  return game_total
 
 if __name__ == "__main__":
-  print(f'Sum: {compute_input(get_day(2023, 2))}')
+  day_data = get_day(2023, 2)
+  print(f'Game Ids Sum: {compute_input_game_ids(day_data)}')
+  print(f'Powers Sum: {compute_input_game_powers(day_data)}')
